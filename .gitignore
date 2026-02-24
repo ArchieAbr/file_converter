@@ -205,3 +205,6 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Wiki (cloned locally by generate_wiki.py / CI)
+wiki/
