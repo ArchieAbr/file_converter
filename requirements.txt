@@ -2,3 +2,8 @@ python-docx
 pdf2image
 Pillow
 pytesseract
+fpdf2
+odfpy
+striprtf
+beautifulsoup4
+markdown

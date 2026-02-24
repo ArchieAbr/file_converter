@@ -1,15 +1,30 @@
 # File Converter
 
-> Version 1.0
+> Version 1.1
 
 A document converter that can convert between commonly used file formats natively on device.
 
 ## Supported Formats
 
+### Input Formats (Read)
+
 - `.txt` - Plain text files
 - `.docx` - Microsoft Word documents
-- `.pdf` - PDF files (read-only, uses OCR)
-- `.png`, `.jpg`, `.jpeg` - Image files
+- `.pdf` - PDF files (uses OCR)
+- `.rtf` - Rich Text Format
+- `.odt` - OpenDocument Text
+- `.html` / `.htm` - HTML documents
+- `.md` - Markdown files
+
+### Output Formats (Write)
+
+- `.txt` - Plain text files
+- `.docx` - Microsoft Word documents
+- `.pdf` - PDF files
+- `.rtf` - Rich Text Format
+- `.odt` - OpenDocument Text
+- `.html` - HTML documents
+- `.md` - Markdown files
 
 ## Installation
 
@@ -48,6 +63,15 @@ python3 convert.py document.pdf .txt
 
 # Convert text to Word document
 python3 convert.py notes.txt .docx
+
+# Convert Word to PDF
+python3 convert.py report.docx .pdf
+
+# Convert HTML to Markdown
+python3 convert.py webpage.html .md
+
+# Convert RTF to ODT
+python3 convert.py document.rtf .odt
 ```
 
 ### Python Module
@@ -62,6 +86,12 @@ converter.convert("document.pdf", ".txt")
 
 # Convert text to Word document
 converter.convert("notes.txt", ".docx")
+
+# Convert Word to PDF
+converter.convert("report.docx", ".pdf")
+
+# Convert HTML to Markdown
+converter.convert("webpage.html", ".md")
 ```
 
 Converted files are saved to `~/Desktop/Converted Documents/`.
@@ -72,3 +102,8 @@ Converted files are saved to `~/Desktop/Converted Documents/`.
 - `pdf2image` - PDF to image conversion
 - `Pillow` - Image processing
 - `pytesseract` - OCR text extraction
+- `fpdf2` - PDF creation
+- `odfpy` - OpenDocument format support
+- `striprtf` - RTF reading
+- `beautifulsoup4` - HTML parsing
+- `markdown` - Markdown processing

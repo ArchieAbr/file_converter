@@ -14,7 +14,7 @@ def print_help():
     """Print usage instructions."""
     print("""
 ╔══════════════════════════════════════════════════════════════╗
-║                    FILE CONVERTER v1.0                       ║
+║                    FILE CONVERTER v1.1                       ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Convert documents between commonly used file formats        ║
 ║                                                              ║
@@ -22,10 +22,19 @@ def print_help():
 ║    • .txt   - Plain text files                               ║
 ║    • .docx  - Microsoft Word documents                       ║
 ║    • .pdf   - PDF files (extracted via OCR)                  ║
+║    • .rtf   - Rich Text Format                               ║
+║    • .odt   - OpenDocument Text                              ║
+║    • .html  - HTML documents                                 ║
+║    • .md    - Markdown files                                 ║
 ║                                                              ║
 ║  SUPPORTED OUTPUT FORMATS:                                   ║
 ║    • .txt   - Plain text files                               ║
 ║    • .docx  - Microsoft Word documents                       ║
+║    • .pdf   - PDF files                                      ║
+║    • .rtf   - Rich Text Format                               ║
+║    • .odt   - OpenDocument Text                              ║
+║    • .html  - HTML documents                                 ║
+║    • .md    - Markdown files                                 ║
 ║                                                              ║
 ║  USAGE:                                                      ║
 ║    python convert.py <input_file> <output_format>            ║
@@ -33,7 +42,8 @@ def print_help():
 ║  EXAMPLES:                                                   ║
 ║    python convert.py document.pdf .txt                       ║
 ║    python convert.py notes.txt .docx                         ║
-║    python convert.py report.docx txt                         ║
+║    python convert.py report.docx .pdf                        ║
+║    python convert.py webpage.html .md                        ║
 ║                                                              ║
 ║  OUTPUT:                                                     ║
 ║    Files are saved to: ~/Desktop/Converted Documents/        ║
