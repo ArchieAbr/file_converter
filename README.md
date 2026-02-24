@@ -2,7 +2,7 @@
 
 > Version 2.0
 
-A document converter with a **web-based GUI** that converts between commonly used file formats natively on device.
+A document converter with a **web-based GUI** that converts between commonly used file formats natively on device. 
 
 ![File Converter](https://img.shields.io/badge/version-2.0-blue) ![Python](https://img.shields.io/badge/python-3.8+-green)
 
