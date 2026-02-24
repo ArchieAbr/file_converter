@@ -14,9 +14,11 @@ def print_help():
     """Print usage instructions."""
     print("""
 ╔══════════════════════════════════════════════════════════════╗
-║                    FILE CONVERTER v1.1                       ║
+║                    FILE CONVERTER v2.0                       ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Convert documents between commonly used file formats        ║
+║                                                              ║
+║  TIP: For a visual interface, run: streamlit run app.py      ║
 ║                                                              ║
 ║  SUPPORTED INPUT FORMATS:                                    ║
 ║    • .txt   - Plain text files                               ║

@@ -132,11 +132,18 @@ class DocumentConverter:
         """Write content to PDF file."""
         pdf = FPDF()
         pdf.add_page()
+        pdf.set_margins(10, 10, 10)
         pdf.set_auto_page_break(auto=True, margin=15)
         pdf.set_font("Helvetica", size=12)
+        # Calculate effective width (page width minus margins)
+        effective_width = pdf.w - 20  # 10mm left + 10mm right margin
         # Handle unicode by encoding
         for line in content.split('\n'):
-            pdf.multi_cell(0, 10, line.encode('latin-1', 'replace').decode('latin-1'))
+            text = line.encode('latin-1', 'replace').decode('latin-1')
+            if text.strip():
+                pdf.multi_cell(effective_width, 10, text)
+            else:
+                pdf.ln(5)  # Add small spacing for empty lines
         pdf.output(str(output_path))
     
     def _write_rtf(self, output_path: Path, content: str) -> None:
