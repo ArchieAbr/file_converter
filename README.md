@@ -1,8 +1,10 @@
 # File Converter
 
-> Version 1.1
+> Version 2.0
 
-A document converter that can convert between commonly used file formats natively on device.
+A document converter with a **web-based GUI** that converts between commonly used file formats natively on device.
+
+![File Converter](https://img.shields.io/badge/version-2.0-blue) ![Python](https://img.shields.io/badge/python-3.8+-green)
 
 ## Supported Formats
 
@@ -51,6 +53,20 @@ sudo apt-get install tesseract-ocr poppler-utils
 ```
 
 ## Usage
+
+### Web GUI (Recommended)
+
+Launch the web interface:
+
+```bash
+streamlit run app.py
+```
+
+This opens a browser window where you can:
+
+1. Drag and drop files to upload
+2. Select output format from dropdown
+3. Click Convert and download the result
 
 ### Command Line
 
@@ -107,3 +123,4 @@ Converted files are saved to `~/Desktop/Converted Documents/`.
 - `striprtf` - RTF reading
 - `beautifulsoup4` - HTML parsing
 - `markdown` - Markdown processing
+- `streamlit` - Web GUI framework

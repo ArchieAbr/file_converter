@@ -7,3 +7,4 @@ odfpy
 striprtf
 beautifulsoup4
 markdown
+streamlit
