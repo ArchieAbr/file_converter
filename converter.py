@@ -182,6 +182,153 @@ class DocumentConverter:
         output_path.write_text(html_content, encoding='utf-8')
 
 
+class ImageConverter:
+    """Convert between various image formats."""
+    
+    SUPPORTED_FORMATS = {'.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.tif', '.webp', '.ico'}
+    
+    # Format display names
+    FORMAT_NAMES = {
+        '.png': 'PNG',
+        '.jpg': 'JPEG',
+        '.jpeg': 'JPEG',
+        '.gif': 'GIF',
+        '.bmp': 'Bitmap',
+        '.tiff': 'TIFF',
+        '.tif': 'TIFF',
+        '.webp': 'WebP',
+        '.ico': 'Icon'
+    }
+    
+    def __init__(self):
+        self.output_dir = Path.home() / "Desktop" / "Converted Images"
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+    
+    def convert(self, input_path: str, output_format: str, quality: int = 95, resize: tuple = None) -> str:
+        """
+        Convert an image to the specified format.
+        
+        Args:
+            input_path: Path to the input image
+            output_format: Target format (e.g., '.png', '.jpg')
+            quality: JPEG/WebP quality (1-100, default 95)
+            resize: Optional tuple (width, height) to resize the image
+            
+        Returns:
+            Path to the converted image
+        """
+        input_file = Path(input_path)
+        
+        if not input_file.exists():
+            raise FileNotFoundError(f"File not found: {input_path}")
+        
+        input_format = input_file.suffix.lower()
+        output_format = output_format.lower()
+        
+        if not output_format.startswith('.'):
+            output_format = f'.{output_format}'
+        
+        if input_format not in self.SUPPORTED_FORMATS:
+            raise ValueError(f"Cannot read image format: {input_format}")
+        
+        if output_format not in self.SUPPORTED_FORMATS:
+            raise ValueError(f"Cannot write image format: {output_format}")
+        
+        # Open and process image
+        img = Image.open(input_file)
+        
+        # Resize if requested
+        if resize:
+            img = img.resize(resize, Image.Resampling.LANCZOS)
+        
+        # Handle format-specific conversions
+        output_path = self.output_dir / f"{input_file.stem}{output_format}"
+        
+        # Convert to appropriate mode for target format
+        img = self._prepare_image_for_format(img, output_format)
+        
+        # Save with appropriate options
+        save_kwargs = self._get_save_options(output_format, quality)
+        img.save(str(output_path), **save_kwargs)
+        
+        return str(output_path)
+    
+    def _prepare_image_for_format(self, img: Image.Image, output_format: str) -> Image.Image:
+        """Prepare image for the target format (handle transparency, modes, etc.)."""
+        
+        # JPEG doesn't support transparency
+        if output_format in ('.jpg', '.jpeg'):
+            if img.mode in ('RGBA', 'LA', 'P'):
+                # Create white background and composite
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode == 'P':
+                    img = img.convert('RGBA')
+                if img.mode in ('RGBA', 'LA'):
+                    background.paste(img, mask=img.split()[-1])  # Use alpha as mask
+                    return background
+            return img.convert('RGB')
+        
+        # GIF - convert to palette mode
+        if output_format == '.gif':
+            if img.mode == 'RGBA':
+                # Preserve transparency for GIF
+                return img.convert('P', palette=Image.Palette.ADAPTIVE, colors=255)
+            return img.convert('P', palette=Image.Palette.ADAPTIVE)
+        
+        # ICO - ensure compatible mode
+        if output_format == '.ico':
+            if img.mode not in ('RGB', 'RGBA'):
+                return img.convert('RGBA')
+            return img
+        
+        # BMP - convert to RGB
+        if output_format == '.bmp':
+            if img.mode == 'RGBA':
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                background.paste(img, mask=img.split()[-1])
+                return background
+            return img.convert('RGB')
+        
+        # PNG, TIFF, WebP - preserve mode
+        return img
+    
+    def _get_save_options(self, output_format: str, quality: int) -> dict:
+        """Get format-specific save options."""
+        options = {}
+        
+        if output_format in ('.jpg', '.jpeg'):
+            options['quality'] = quality
+            options['optimize'] = True
+        elif output_format == '.png':
+            options['optimize'] = True
+        elif output_format == '.webp':
+            options['quality'] = quality
+            options['method'] = 4  # Balance between speed and compression
+        elif output_format in ('.tiff', '.tif'):
+            options['compression'] = 'tiff_lzw'
+        elif output_format == '.ico':
+            # ICO supports multiple sizes, use standard sizes
+            options['sizes'] = [(256, 256), (128, 128), (64, 64), (32, 32), (16, 16)]
+        
+        return options
+    
+    def get_image_info(self, input_path: str) -> dict:
+        """Get information about an image."""
+        input_file = Path(input_path)
+        img = Image.open(input_file)
+        
+        return {
+            'format': img.format,
+            'mode': img.mode,
+            'size': img.size,
+            'width': img.width,
+            'height': img.height,
+            'file_size': input_file.stat().st_size
+        }
+
+
 if __name__ == "__main__":
     converter = DocumentConverter()
+    image_converter = ImageConverter()
     # Example: converter.convert("sample.pdf", ".txt")
+    # Example: image_converter.convert("photo.png", ".jpg")
